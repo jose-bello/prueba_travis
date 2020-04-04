@@ -1,7 +1,7 @@
 before_script:
   # both instnaces are on the same machine
   - echo "Setting up environment"
-  - echo "PRIVATE_KEY_INSTANCE" >> ~/pipeline-infra_kp64.pem
+  - echo "PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
   - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
    
 jobs:
@@ -9,6 +9,7 @@ jobs:
   - stage: deploy
     script: 
     - echo 'Initializing Deploy into develop branch'
+    - cat ~/pipeline-infra.pem
     - ssh  -i  ~/pipeline-infra.pem ubuntu@$IP_INSTANCE "ls -l /var/www && exit"
 
 after_script:
