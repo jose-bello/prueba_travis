@@ -5,9 +5,8 @@ before_script:
   - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
    
 jobs:
-  include:
+  deplay-integration:
   - stage: deploy
-    if: branch = develop
     script: 
     - echo 'Initializing Deploy into develop branch'
     - ssh  -i  ~/pipeline-infra.pem ubuntu@$IP_INSTANCE "ls -l /var/www && exit"
