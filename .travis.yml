@@ -1,7 +1,7 @@
-language: node_js
+language: php
 
-node_js:
-  - "10.19.0"
+php:
+  - PHP 7.3
   
 before_script:
   # both instnaces are on the same machine
@@ -11,13 +11,13 @@ before_script:
   - echo "Verificando Private Key"
   - cat  ~/pipeline-infra.pem
   - echo "Antes de lanzar el job"
-
-   
+  
 jobs:
-  deplay-integration:
+  include:
   - stage: deploy
-    script: 
-    - echo 'Initializing Deploy into develop branch'
+    if: branch = integration
+    script:
+    - echo 'Initializing Deploy into integration branch'
     - cat ~/pipeline-infra.pem
     - ssh  -i  ~/pipeline-infra.pem ubuntu@$IP_INSTANCE "ls -l /var/www && exit"
 
