@@ -18,13 +18,6 @@ jobs:
       script:
       - echo 'Initializing Deploy into integration branch'
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/iprueba_cicd_travis && exit"
-      only:
-        - integration
-      if: branch = master
-      script:
-      - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/pprueba_cicd_travis && exit"
-      only:
-        - master
     
 after_script:
   - echo 'Deploy has Finished"
