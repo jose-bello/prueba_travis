@@ -14,6 +14,8 @@ before_script:
 stages:
   - name: deploy-int
     if: branch = integration
+  - name: deploy-pro
+    if: branch = master
 
 jobs:
   include:
@@ -22,6 +24,12 @@ jobs:
       script:
       - echo 'Initializing Deploy into integration branch'
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/iprueba_cicd_travis && sudo git pull origin integration && exit"
-    
+
+    - stage: deploy-pro
+      name: deploy-pro
+      script:
+      - echo "Initializing Deploy into master branch"
+      - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/pprueba_cicd_travis && sudo git pull origin master && exit"
+
 after_script:
   - echo 'Deploy has Finished"
