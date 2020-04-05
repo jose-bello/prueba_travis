@@ -1,7 +1,7 @@
 language: php
 
 php:
-  - PHP 7.3
+  - 7.3
   
 before_script:
   # both instnaces are on the same machine
