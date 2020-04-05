@@ -17,7 +17,7 @@ jobs:
       if: branch = integration
       script:
       - echo 'Initializing Deploy into integration branch'
-      - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/iprueba_cicd_travis && exit"
+      - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/iprueba_cicd_travis && git pull origin integration && exit"
     
 after_script:
   - echo 'Deploy has Finished"
