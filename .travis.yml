@@ -3,6 +3,9 @@ before_script:
   - echo "Setting up environment"
   - echo "$PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
   - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
+  - echo "Verificando Private Key"
+  - cat  ~/pipeline-infra.pem
+  - echo "Antes de lanzar el job"
 
    
 jobs:
