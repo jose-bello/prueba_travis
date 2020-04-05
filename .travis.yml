@@ -8,18 +8,26 @@ before_script:
   - echo "Setting up environment"
   - echo "$PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
   - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
-  - echo "Verificando Private Key"
-  - cat  ~/pipeline-infra.pem
-  - echo "Antes de lanzar el job"
-  
-jobs:
-  include:
-  - stage: deploy
-    if: branch = integration
-    script:
-    - echo 'Initializing Deploy into integration branch'
-    - cat ~/pipeline-infra.pem
-    - ssh  -i  ~/pipeline-infra.pem ubuntu@$IP_INSTANCE "ls -l /var/www && exit"
+  - echo "$CONFIG_FILE" |base64 -d > ~/ssh.pipeline-infra.config
+  - chmod 400 ~/pipeline-infra.pem
 
+deploy_develop:
+  type: deploy
+  environment:
+    name: integration
+  script:
+    - echo 'Initializing Deploy into integration branch'
+    - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/iprueba_cicd_travis && exit"
+only:
+  - integration
+
+deploy_master:
+  type: deploy
+  environment:
+    name: master
+  script:
+    - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/pprueba_cicd_travis && exit"
+only:
+  - master
 after_script:
   - echo 'Deploy has Finished"
