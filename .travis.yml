@@ -1,0 +1,35 @@
+language: php
+
+php:
+  - 7.3
+  
+before_script:
+  # both instances are on the same machine
+  - echo "Setting up environment"
+  - echo "$PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
+  - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
+  - echo "$CONFIG_FILE" |base64 -d > ~/ssh.pipeline-infra.config
+  - chmod 400 ~/pipeline-infra.pem
+
+stages:
+  - name: deploy-int
+    if: branch = integration
+  - name: deploy-pro
+    if: branch = master
+
+jobs:
+  include:
+    - stage: deploy-int
+      name: deploy-int
+      script:
+      - echo 'Initializing Deploy into integration branch'
+      - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/iprueba_cicd_travis && sudo git pull origin integration && exit"
+
+    - stage: deploy-pro
+      name: deploy-pro
+      script:
+      - echo "Initializing Deploy into master branch"
+      - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/pprueba_cicd_travis && sudo git pull origin master && exit"
+
+after_script:
+  - echo 'Deploy has Finished"
