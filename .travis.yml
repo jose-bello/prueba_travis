@@ -21,12 +21,16 @@ jobs:
   include:
     - stage: deploy-int
       name: deploy-int
+      before_script:
+        - echo "Aqui se configura la conexiona a integration"
       script:
       - echo 'Initializing Deploy into integration branch'
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/iprueba_cicd_travis && sudo git pull origin integration && exit"
 
     - stage: deploy-pro
       name: deploy-pro
+      before_script:
+        - echo "Aqui se configura la conexion a produccion"
       script:
       - echo "Initializing Deploy into master branch"
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/pprueba_cicd_travis && sudo git pull origin master && exit"
