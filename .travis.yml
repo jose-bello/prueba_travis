@@ -1,3 +1,8 @@
+language: node_js
+
+node_js:
+  - "10.19.0"
+  
 before_script:
   # both instnaces are on the same machine
   - echo "Setting up environment"
@@ -17,4 +22,4 @@ jobs:
     - ssh  -i  ~/pipeline-infra.pem ubuntu@$IP_INSTANCE "ls -l /var/www && exit"
 
 after_script:
-  - echo 'Deploy has Finished
+  - echo 'Deploy has Finished"
