@@ -13,22 +13,18 @@ before_script:
 
 jobs:
   include:
-    - stage: deploy-int
+    - stage: deploy
+      if: branch = integration
       script:
       - echo 'Initializing Deploy into integration branch'
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/iprueba_cicd_travis && exit"
       only:
         - integration
-    - stage: deploy-pro
+      if: branch = master
       script:
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "ls -l /var/www/pprueba_cicd_travis && exit"
       only:
         - master
-stages:
-  - name: deploy-int
-    if: type = pull_request
-  - name: deploy-pro
-    if: type = push AND branch = master  
     
 after_script:
   - echo 'Deploy has Finished"
