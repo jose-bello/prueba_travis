@@ -21,12 +21,28 @@ jobs:
   include:
     - stage: deploy-int
       name: deploy-int
+      before_script:
+        - echo "Aqui se configura la conexiona a integration"
+        # both instances are on the same machine
+        - echo "Setting up environment"
+        - echo "$PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
+        - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
+        - echo "$CONFIG_FILE" |base64 -d > ~/ssh.pipeline-infra.config
+        - chmod 400 ~/pipeline-infra.pem  
       script:
       - echo 'Initializing Deploy into integration branch'
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/iprueba_cicd_travis && sudo git pull origin integration && exit"
 
     - stage: deploy-pro
       name: deploy-pro
+      before_script:
+        - echo "Aqui se configura la conexion a produccion"
+        # both instances are on the same machine
+        - echo "Setting up environment"
+        - echo "$PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
+        - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
+        - echo "$CONFIG_FILE" |base64 -d > ~/ssh.pipeline-infra.config
+        - chmod 400 ~/pipeline-infra.pem
       script:
       - echo "Initializing Deploy into master branch"
       - ssh -F ~/ssh.pipeline-infra.config $IP_INSTANCE "cd /var/www/pprueba_cicd_travis && sudo git pull origin master && exit"
