@@ -4,7 +4,7 @@ php:
   - 7.3
   
 before_script:
-  # both instnaces are on the same machine
+  # both instances are on the same machine
   - echo "Setting up environment"
   - echo "$PRIVATE_KEY_INSTANCE" > ~/pipeline-infra_kp64.pem
   - cat ~/pipeline-infra_kp64.pem | base64 -d > ~/pipeline-infra.pem
