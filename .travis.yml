@@ -1,4 +1,4 @@
-language: php
+#language: php
   
 before_script:
   # both instances are on the same machine
