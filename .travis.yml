@@ -1,7 +1,4 @@
 language: php
-
-php:
-  - 7.3
   
 before_script:
   # both instances are on the same machine
